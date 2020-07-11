@@ -2,17 +2,25 @@ import lia.Monitor.Store.Fast.DB;
 
 public class DatabaseConnection {
     DB conn;
+    int run_id;
 
     /**
      * Connect to the database
      */
     public DatabaseConnection() {
-         this.conn = new DB();
+
+        this.conn = new DB();
+        String sql = "SELECT run_id FROM run ORDER BY run_id DESC LIMIT 1";
+        if (this.conn.query(sql)){
+            if (conn.moveNext()){
+                this.run_id =  conn.geti("run_id");
+            }
+        }
+
     }
 
 
     public Integer getSiteIdByJobId(Integer jobId){
-        System.err.println("Get siteid called");
 
         Integer siteId = -1;
         String sql = "SELECT site_id FROM jobs WHERE job_id = %d";
@@ -22,15 +30,14 @@ public class DatabaseConnection {
                 siteId =  conn.geti("site_id");
             }
         }
-        System.err.println("get site succesfully");
+        System.err.println("Site id: " + siteId + " for job id: " + jobId);
         return siteId;
     }
 
 
     public Integer addNode(Integer siteId, String nodeName){
-        System.err.println("add node called");
-        String sql = "INSERT INTO nodes (site_id,node_name) VALUES (%d, '%s')";
-        String preparedStmt = String.format(sql,siteId,nodeName);
+        String sql = "INSERT INTO nodes (site_id,run_id,node_name) VALUES (%d, %d, '%s')";
+        String preparedStmt = String.format(sql,this.run_id,siteId,nodeName);
         Integer nodeId = -1;
        
         if (this.conn.query(preparedStmt)){
@@ -40,15 +47,15 @@ public class DatabaseConnection {
                 }
             }
         }
-        System.err.println("Cadd node succesfully");
+        System.err.println("New node entry with id " + nodeId + " created succefully for " + nodeName);
         return nodeId;
     }
 
 
     public Integer getNodeIdByNodeName(Integer siteId, String nodeName){
         System.err.println("Get node by name called");
-        String sql = "SELECT node_id FROM nodes WHERE site_id=%d and node_name='%s'";
-        String preparedStmt = String.format(sql,siteId,nodeName);
+        String sql = "SELECT node_id FROM nodes WHERE (site_id=%d) AND (node_name='%s') AND (run_id=%d)";
+        String preparedStmt = String.format(sql,siteId,nodeName,this.run_id);
         Integer nodeId = 0;
 
         if (this.conn.query(preparedStmt)){
@@ -60,8 +67,7 @@ public class DatabaseConnection {
                 nodeId =  Integer.parseInt(conn.gets(1));
             }
         }
-        System.err.println("get node by id established succesfully");
-
+        System.err.println("Id of node " + nodeName + " : "+ nodeId);
         return nodeId;
     }
 
@@ -74,14 +80,13 @@ public class DatabaseConnection {
             // If node does not exist, create Node
             nodeId = addNode(siteId, nodeName);
         }
-        System.err.println(nodeId+","+siteId);
 
-        String sql = "INSERT INTO parameters (job_id,node_id,paramName,paramValue,last_update) VALUES(%d,%d,'%s','%s',NOW())";
-        String preparedStmt = String.format(sql,jobId,nodeId,paramName,paramValue);
-        System.err.println("Updating job"+ Integer.toString(jobId) + "with " + Integer.toString(nodeId) + " " + paramName + ":" + paramValue);
-        this.conn.query(preparedStmt);
-
-        System.err.println("add job result established succesfully");
+        String sql = "INSERT INTO parameters (job_id,run_id,node_id,paramName,paramValue,last_update) VALUES(%d, %d, %d, '%s','%s', NOW())";
+        String preparedStmt = String.format(sql,jobId,this.run_id,nodeId,paramName,paramValue);
+        if (this.conn.query(preparedStmt,true)){
+            System.err.println("New parameter added. Job ID: " + jobId + " Name: " + paramName + " Value:" + paramValue
+                    + " Node Id: " + nodeId + " Site ID:" + siteId + " Run ID:" + run_id);
+        };
 
     }
 
