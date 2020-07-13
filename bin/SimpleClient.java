@@ -109,7 +109,6 @@ public class SimpleClient {
 	}
 
 	public void addResult(Result r){
-		// Integers go here
 	    // in this example there are no String values received, when subscribing to such values this should also be implemented
 	    for (int i=0; i<r.param.length; i++)
 		logResult(r.time, r.FarmName, r.ClusterName, r.NodeName, r.param_name[i], String.valueOf(r.param[i]));
