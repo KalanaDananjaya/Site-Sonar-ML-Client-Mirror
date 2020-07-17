@@ -40,6 +40,7 @@ public class DatabaseConnection {
         if (this.conn.query(sql)) {
             if (conn.moveNext()) {
                 this.run_id = conn.geti("run_id");
+                logger.debug("Run Id retrieved from the database: " + this.run_id);
             }
         }
         else {
@@ -59,6 +60,7 @@ public class DatabaseConnection {
         Integer siteId = -1;
         String sql = "SELECT site_id FROM jobs WHERE job_id = %d";
         String preparedStmt = String.format(sql, jobId);
+        logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             if (conn.moveNext()) {
                 siteId = conn.geti("site_id");
@@ -72,7 +74,7 @@ public class DatabaseConnection {
             }
         }
         else {
-            logger.error("Unable to retreive Site Id from Job Id");
+            logger.error("Unable to retrieve Site Id from Job Id");
         }
         return siteId;
     }
@@ -82,7 +84,7 @@ public class DatabaseConnection {
         String sql = "INSERT INTO nodes (site_id,run_id,node_name) VALUES (%d, %d, '%s')";
         String preparedStmt = String.format(sql, siteId, this.run_id, nodeName);
         Integer nodeId = -1;
-
+        logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             if (this.conn.query("SELECT LAST_INSERT_ID()")) {
                 if (conn.moveNext()) {
@@ -107,7 +109,7 @@ public class DatabaseConnection {
         String sql = "SELECT node_id FROM nodes WHERE (site_id=%d) AND (node_name='%s') AND (run_id=%d)";
         String preparedStmt = String.format(sql, siteId, nodeName, this.run_id);
         Integer nodeId = 0;
-
+        logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             if (!conn.moveNext()) {
                 nodeId = -1; // Node does not exist
@@ -122,7 +124,7 @@ public class DatabaseConnection {
             }
         }
         else {
-            logger.error("Unable to retreive node Id by name");
+            logger.error("Unable to retrieve node Id by name");
         }
         return nodeId;
     }
@@ -130,6 +132,7 @@ public class DatabaseConnection {
     public void updateRunState(String state, int run_id) {
         String sql = "UPDATE run SET state='%s' WHERE (run_id=%d)";
         String preparedStmt = String.format(sql, state, run_id);
+        logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             String logMsg = "Run %d marked as %s";
             logger.info(String.format(logMsg, run_id, state));
@@ -144,6 +147,7 @@ public class DatabaseConnection {
         String sql = "SELECT site_id FROM processing_state WHERE run_id=%d AND (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d)";
         String preparedStmt = String.format(sql, run_id, this.site_expiration_time);
         ArrayList<String> stalled_site_ids = new ArrayList<>();
+        logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             while (conn.moveNext()) {
                 stalled_site_ids.add(this.conn.gets(1));
@@ -158,6 +162,7 @@ public class DatabaseConnection {
                 sql = "UPDATE processing_state SET state='%s' WHERE site_id=%d AND run_id=%d";
                 String id = stalled_site_ids.get(i);
                 preparedStmt = String.format(sql, "STALLED", Integer.parseInt(id), run_id);
+                logger.trace(preparedStmt);
                 if (this.conn.query(preparedStmt)) {
                     String logMsg = "Site %d marked as STALLED";
                     logger.info(String.format(logMsg, Integer.parseInt(id)));
@@ -188,6 +193,7 @@ public class DatabaseConnection {
             //If sites are waiting but run has been running for more than 24 hours, mark run as complete
             String run_sql = "UPDATE run SET state='%s' WHERE (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d) AND run_id=%d";
             String run_preparedStmt = String.format(run_sql, "TIMED_OUT", this.run_expiration_time, run_id);
+            logger.trace(preparedStmt);
             if (this.conn.query(run_preparedStmt)) {
                 if (this.conn.getUpdateCount() > 0) {
                     String logMsg = "Run %d marked as TIMED_OUT due to exceeding %d. Exiting...";
@@ -207,6 +213,7 @@ public class DatabaseConnection {
     public ArrayList<String> getSitesByProcessingState(String state, int run_id) {
         String sql = "SELECT site_id FROM processing_state WHERE (state='%s') AND (run_id=%d)";
         String preparedStmt = String.format(sql, state, run_id);
+        logger.trace(preparedStmt);
         ArrayList<String> site_id_list = new ArrayList<String>();
         if (this.conn.query(preparedStmt)) {
             while (conn.moveNext()) {
@@ -233,6 +240,7 @@ public class DatabaseConnection {
         if (((float) finished_job_count / (float) all_job_count) > 0.9) {
             String sql = "UPDATE processing_state SET state='%s',running_job_count=%d,completed_job_count=%d,killed_job_count=%d,last_update=NOW() WHERE (site_id=%d) AND (run_id=%d)";
             preparedStmt = String.format(sql, "COMPLETED", len_started_jobs, len_completed_jobs, len_killed_jobs, siteId, run_id);
+            logger.trace(preparedStmt);
             if (this.conn.query(preparedStmt)) {
                 String logMsg = "Processing State of site %d in Run %d marked as COMPLETE";
                 logger.info(String.format(logMsg, siteId, run_id));
@@ -245,6 +253,7 @@ public class DatabaseConnection {
         } else {
             String sql = "UPDATE processing_state SET running_job_count=%d,completed_job_count=%d,killed_job_count=%d,last_update=NOW() WHERE (site_id=%d) AND (run_id=%d)";
             preparedStmt = String.format(sql, len_started_jobs, len_completed_jobs, len_killed_jobs, siteId, run_id);
+            logger.trace(preparedStmt);
             if (this.conn.query(preparedStmt)) {
                 String logMsg = "Job counts in processing state of site %d in Run %d updated";
                 logger.debug(String.format(logMsg, siteId, run_id));
@@ -261,6 +270,7 @@ public class DatabaseConnection {
     public ArrayList<String> getAllJobsByStateAndSite(int run_id, String state, Integer siteId) {
         String sql = "SELECT job_id FROM jobs WHERE (job_state='%s') AND (run_id=%d) AND (site_id=%d)";
         String preparedStmt = String.format(sql, state, run_id, siteId);
+        logger.trace(preparedStmt);
         ArrayList<String> job_id_list = new ArrayList<String>();
         if (this.conn.query(preparedStmt)) {
             while (conn.moveNext()) {
@@ -278,6 +288,7 @@ public class DatabaseConnection {
         String sql = "UPDATE jobs SET job_state='%s'" +
                 ",last_update=NOW() WHERE job_id='%s'";
         String preparedStmt = String.format(sql, state, jobId);
+        logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             String logMsg = "Job %d marked as %s";
             logger.debug(String.format(logMsg, jobId, state));
@@ -304,6 +315,7 @@ public class DatabaseConnection {
         } else {
             String sql = "INSERT INTO parameters (job_id,run_id,node_id,paramName,paramValue,last_update) VALUES(%d, %d, %d, '%s','%s', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id";
             String preparedStmt = String.format(sql, jobId, this.run_id, nodeId, StringEscapeUtils.escapeJava(paramName), StringEscapeUtils.escapeJava(paramValue));
+            logger.trace(preparedStmt);
             if (this.conn.query(preparedStmt)) {
                 String logMsg = "New parameter added. Job ID: %d\t Node ID: %d\t Site ID: %d\t Name: %s\t Value: %s";
                 logger.info(String.format(logMsg, jobId, nodeId, siteId, paramName, paramValue));
