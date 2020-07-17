@@ -74,7 +74,7 @@ public class DatabaseConnection {
             }
         }
         else {
-            logger.error("Unable to retrieve Site Id from Job Id");
+            logger.error(String.format("Unable to retrieve Site Id from Job Id. \nArgs - JobId: %d",jobId));
         }
         return siteId;
     }
@@ -99,7 +99,7 @@ public class DatabaseConnection {
             }
         }
         else {
-            logger.error("Failed to create new node");
+            logger.error(String.format("Failed to create new node. \nArgs - siteId: %d\t nodeName: %s",siteId,nodeName));
         }
         return nodeId;
     }
@@ -124,7 +124,7 @@ public class DatabaseConnection {
             }
         }
         else {
-            logger.error("Unable to retrieve node Id by name");
+            logger.error(String.format("Unable to retrieve node Id by name. \nArgs - siteId: %d\t nodeName: %s",siteId,nodeName));
         }
         return nodeId;
     }
@@ -139,7 +139,7 @@ public class DatabaseConnection {
 
         }
         else {
-            logger.error("Unable to update Run state");
+            logger.error(String.format("Unable to update Run state. \nArgs - state: %s\t runId: %d",state,run_id));
         }
     }
 
@@ -191,10 +191,10 @@ public class DatabaseConnection {
             System.exit(0);
         } else {
             //If sites are waiting but run has been running for more than 24 hours, mark run as complete
-            String run_sql = "UPDATE run SET state='%s' WHERE (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d) AND run_id=%d";
-            String run_preparedStmt = String.format(run_sql, "TIMED_OUT", this.run_expiration_time, run_id);
+            String sql = "UPDATE run SET state='%s' WHERE (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d) AND run_id=%d";
+            String preparedStmt = String.format(sql, "TIMED_OUT", this.run_expiration_time, run_id);
             logger.trace(preparedStmt);
-            if (this.conn.query(run_preparedStmt)) {
+            if (this.conn.query(preparedStmt)) {
                 if (this.conn.getUpdateCount() > 0) {
                     String logMsg = "Run %d marked as TIMED_OUT due to exceeding %d. Exiting...";
                     logger.info(String.format(logMsg, run_id, this.run_expiration_time));
@@ -204,7 +204,7 @@ public class DatabaseConnection {
                 }
             }
             else{
-                logger.error("Unable to update run state");
+                logger.error(String.format("Unable to update run state. \nArgs - runId: %d",run_id));
             }
             
         }
@@ -221,7 +221,7 @@ public class DatabaseConnection {
             }
         }
         else{
-            logger.error("Unable to retrieve site by processing state");
+            logger.error(String.format("Unable to retrieve site by processing state. \nArgs - state: %s\t runId: %d",state,run_id));
         }
         return site_id_list;
     }
@@ -247,7 +247,7 @@ public class DatabaseConnection {
 
             }
             else{
-                logger.error("Unable to update processing state");
+                logger.error(String.format("Unable to update processing state. \nArgs - siteId: %d\t, runId: %d",siteId,run_id));
             }
             manageRunState(run_id);
         } else {
@@ -260,7 +260,7 @@ public class DatabaseConnection {
 
             }
             else{
-                logger.error("Unable to update processing state");
+                logger.error(String.format("Unable to update processing state. \nArgs - siteId: %d\t, runId: %d",siteId,run_id));
             }
         }
 
@@ -278,7 +278,7 @@ public class DatabaseConnection {
             }
         }
         else{
-            logger.error("Unable to get jobs by state and site");
+            logger.error(String.format("Unable to get jobs by state and site. \nArgs - siteId: %d\t, runId: %d\t, state: %s",siteId,run_id,state));
         }
         return job_id_list;
     }
@@ -295,7 +295,7 @@ public class DatabaseConnection {
 
         }
         else{
-            logger.error("Unable to update job state");
+            logger.error(String.format("Unable to update job state. \nArgs - jobId: %d\t siteId: %d\t runId: %d\t state: %s",jobId,siteId,run_id,state));
         }
         updateProcessingState(siteId, run_id);
     }
@@ -322,7 +322,7 @@ public class DatabaseConnection {
 
             }
             else{
-                logger.error("Unable to add job parameters to the database");
+                logger.error(String.format("Unable to add job parameters to the database. \nArgs - entryName: %s\t, paramName: %d\t siteId: %d\t nodeId: %d",entryName,paramName,siteId,nodeId));
             }
         }
     }
