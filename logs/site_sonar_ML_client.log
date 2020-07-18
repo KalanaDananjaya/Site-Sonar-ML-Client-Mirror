@@ -1,0 +1,70 @@
+2020-07-18 13:44:11,515 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:11,519 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:11,818 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:11,819 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:12,074 DEBUG [DatabaseConnection] No node exist for node name: wn-infn-3-7-29.recas.ba.infn.it
+2020-07-18 13:44:12,075 TRACE [DatabaseConnection] INSERT INTO nodes (site_id,run_id,node_name) VALUES (1, 3, 'wn-infn-3-7-29.recas.ba.infn.it')
+2020-07-18 13:44:12,934 INFO  [DatabaseConnection] New node entry with id 5 created successfully for wn-infn-3-7-29.recas.ba.infn.it in site 1
+2020-07-18 13:44:12,973 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'Uname','Linux wn-infn-3-7-29.recas.ba.infn.it 3.10.0-862.14.4.el7.x86_64 #1 SMP Wed Sep 26 15:12:11 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:13,548 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: Uname	 Value: Linux wn-infn-3-7-29.recas.ba.infn.it 3.10.0-862.14.4.el7.x86_64 #1 SMP Wed Sep 26 15:12:11 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+2020-07-18 13:44:13,787 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:13,788 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:13,789 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:14,061 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:14,061 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:14,289 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:14,290 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'HMD','/home/condor/dir_36079/CREAM643845712', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:14,878 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: HMD	 Value: /home/condor/dir_36079/CREAM643845712
+2020-07-18 13:44:15,131 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:15,132 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:15,132 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:15,391 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:15,391 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:15,622 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:15,622 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'TMP','/home/condor/dir_36079', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:16,212 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: TMP	 Value: /home/condor/dir_36079
+2020-07-18 13:44:16,518 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:16,518 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:16,519 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:16,825 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:16,825 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:17,065 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:17,066 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'Singularity','SUPPORTED', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:17,587 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: Singularity	 Value: SUPPORTED
+2020-07-18 13:44:17,822 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:17,823 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:17,823 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:18,067 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:18,067 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:18,361 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:18,362 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'Loop devices','max loop devices = 0', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:18,835 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: Loop devices	 Value: max loop devices = 0
+2020-07-18 13:44:19,067 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:19,068 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:19,069 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:19,385 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:19,386 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:19,693 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:19,694 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'Overlay','enable overlay = no', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:20,204 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: Overlay	 Value: enable overlay = no
+2020-07-18 13:44:20,431 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:20,432 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:20,433 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:20,716 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:20,717 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:20,972 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:20,973 TRACE [DatabaseConnection] INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(1929378215, 3, 1, 5, 'Max namespaces','15000', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id
+2020-07-18 13:44:21,451 INFO  [DatabaseConnection] New parameter added. Job ID: 1929378215	 Node ID: 5	 Site ID: 1	 Name: Max namespaces	 Value: 15000
+2020-07-18 13:44:21,740 DEBUG [DatabaseConnection] Run Id retrieved from the database: 3
+2020-07-18 13:44:21,741 INFO  [DatabaseConnection] Job parameter received
+2020-07-18 13:44:21,741 TRACE [DatabaseConnection] SELECT site_id FROM jobs WHERE job_id = 1929378215
+2020-07-18 13:44:22,054 DEBUG [DatabaseConnection] Site id: 1 retrieved for job id: 1929378215
+2020-07-18 13:44:22,054 TRACE [DatabaseConnection] SELECT node_id FROM nodes WHERE (site_id=1) AND (node_name='wn-infn-3-7-29.recas.ba.infn.it') AND (run_id=3)
+2020-07-18 13:44:22,373 DEBUG [DatabaseConnection] Node id: 5 for node name: wn-infn-3-7-29.recas.ba.infn.it retrieved
+2020-07-18 13:44:22,373 TRACE [DatabaseConnection] UPDATE jobs SET job_state='COMPLETED',last_update=NOW() WHERE job_id='1929378215'
+2020-07-18 13:44:22,969 DEBUG [DatabaseConnection] Job 1929378215 marked as COMPLETED
+2020-07-18 13:44:22,969 TRACE [DatabaseConnection] SELECT job_id FROM jobs WHERE (job_state='STARTED') AND (run_id=3) AND (site_id=1)
+2020-07-18 13:44:23,276 TRACE [DatabaseConnection] SELECT job_id FROM jobs WHERE (job_state='COMPLETED') AND (run_id=3) AND (site_id=1)
+2020-07-18 13:44:23,517 TRACE [DatabaseConnection] SELECT job_id FROM jobs WHERE (job_state='KILLED') AND (run_id=3) AND (site_id=1)
+2020-07-18 13:44:23,770 TRACE [DatabaseConnection] UPDATE processing_state SET running_job_count=5,completed_job_count=1,killed_job_count=0,last_update=NOW() WHERE (site_id=1) AND (run_id=3)
+2020-07-18 13:44:24,253 DEBUG [DatabaseConnection] Job counts in processing state of site 1 in Run 3 updated
