@@ -313,7 +313,7 @@ public class DatabaseConnection {
         if ((paramName.equals("state")) && (paramValue.equals("complete"))) {
             updateJobState(jobId, "COMPLETED", siteId, this.run_id);
         } else {
-            String sql = "INSERT INTO parameters (job_id,run_id,node_id,paramName,paramValue,last_update) VALUES(%d, %d, %d, '%s','%s', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id";
+            String sql = "INSERT INTO parameters (job_id,run_id,site_id,node_id,paramName,paramValue,last_update) VALUES(%d, %d, %d, %d, '%s','%s', NOW()) ON DUPLICATE KEY UPDATE job_id=job_id";
             String preparedStmt = String.format(sql, jobId, this.run_id, nodeId, StringEscapeUtils.escapeJava(paramName), StringEscapeUtils.escapeJava(paramValue));
             logger.trace(preparedStmt);
             if (this.conn.query(preparedStmt)) {
