@@ -10,10 +10,9 @@ public class TestDbConnection {
             System.err.println("Database Connection Successful");
             String run_id = conn.gets(1);
             String backend = conn.getBackend().getBackendName();
-            System.err.println("Established connection with "+ backend);
+            System.err.println("Established connection with " + backend);
             System.err.println("Latest run id: " + run_id);
-        }
-        else {
+        } else {
             System.err.println("Unable to connect to database");
         }
     }

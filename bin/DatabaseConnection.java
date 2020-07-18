@@ -4,6 +4,7 @@ import lia.Monitor.Store.Fast.DB;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.apache.log4j.*;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -42,8 +43,7 @@ public class DatabaseConnection {
                 this.runId = conn.geti("run_id");
                 logger.debug("Run Id retrieved from the database: " + this.runId);
             }
-        }
-        else {
+        } else {
             logger.error("Unable to retreive Run Id");
         }
         logger.setLevel(Level.ALL);
@@ -72,9 +72,8 @@ public class DatabaseConnection {
                 logger.warn(String.format(logMsg, siteId));
 
             }
-        }
-        else {
-            logger.error(String.format("Unable to retrieve Site Id from Job Id. \nArgs - JobId: %d",jobId));
+        } else {
+            logger.error(String.format("Unable to retrieve Site Id from Job Id. \nArgs - JobId: %d", jobId));
         }
         return siteId;
     }
@@ -97,9 +96,8 @@ public class DatabaseConnection {
                 }
 
             }
-        }
-        else {
-            logger.error(String.format("Failed to create new node. \nArgs - siteId: %d\t nodeName: %s",siteId,nodeName));
+        } else {
+            logger.error(String.format("Failed to create new node. \nArgs - siteId: %d\t nodeName: %s", siteId, nodeName));
         }
         return nodeId;
     }
@@ -122,9 +120,8 @@ public class DatabaseConnection {
                 logger.debug(String.format(logMsg, nodeId, nodeName));
 
             }
-        }
-        else {
-            logger.error(String.format("Unable to retrieve node Id by name. \nArgs - siteId: %d\t nodeName: %s",siteId,nodeName));
+        } else {
+            logger.error(String.format("Unable to retrieve node Id by name. \nArgs - siteId: %d\t nodeName: %s", siteId, nodeName));
         }
         return nodeId;
     }
@@ -137,9 +134,8 @@ public class DatabaseConnection {
             String logMsg = "Run %d marked as %s";
             logger.info(String.format(logMsg, runId, state));
 
-        }
-        else {
-            logger.error(String.format("Unable to update Run state. \nArgs - state: %s\t runId: %d",state,runId));
+        } else {
+            logger.error(String.format("Unable to update Run state. \nArgs - state: %s\t runId: %d", state, runId));
         }
     }
 
@@ -167,8 +163,7 @@ public class DatabaseConnection {
                     String logMsg = "Site %d marked as STALLED";
                     logger.info(String.format(logMsg, Integer.parseInt(id)));
 
-                }
-                else {   
+                } else {
                     String logMsg = "Unable to mark Site %d marked as STALLED";
                     logger.error(String.format(logMsg, Integer.parseInt(id)));
                 }
@@ -202,11 +197,10 @@ public class DatabaseConnection {
                     // Exit the program
                     System.exit(0);
                 }
+            } else {
+                logger.error(String.format("Unable to update run state. \nArgs - runId: %d", runId));
             }
-            else{
-                logger.error(String.format("Unable to update run state. \nArgs - runId: %d",runId));
-            }
-            
+
         }
     }
 
@@ -219,9 +213,8 @@ public class DatabaseConnection {
             while (conn.moveNext()) {
                 site_id_list.add(this.conn.gets(1));
             }
-        }
-        else{
-            logger.error(String.format("Unable to retrieve site by processing state. \nArgs - state: %s\t runId: %d",state,runId));
+        } else {
+            logger.error(String.format("Unable to retrieve site by processing state. \nArgs - state: %s\t runId: %d", state, runId));
         }
         return site_id_list;
     }
@@ -245,9 +238,8 @@ public class DatabaseConnection {
                 String logMsg = "Processing State of site %d in Run %d marked as COMPLETE";
                 logger.info(String.format(logMsg, siteId, runId));
 
-            }
-            else{
-                logger.error(String.format("Unable to update processing state. \nArgs - siteId: %d\t, runId: %d",siteId,runId));
+            } else {
+                logger.error(String.format("Unable to update processing state. \nArgs - siteId: %d\t, runId: %d", siteId, runId));
             }
             manageRunState(runId);
         } else {
@@ -258,9 +250,8 @@ public class DatabaseConnection {
                 String logMsg = "Job counts in processing state of site %d in Run %d updated";
                 logger.debug(String.format(logMsg, siteId, runId));
 
-            }
-            else{
-                logger.error(String.format("Unable to update processing state. \nArgs - siteId: %d\t, runId: %d",siteId,runId));
+            } else {
+                logger.error(String.format("Unable to update processing state. \nArgs - siteId: %d\t, runId: %d", siteId, runId));
             }
         }
 
@@ -276,9 +267,8 @@ public class DatabaseConnection {
             while (conn.moveNext()) {
                 job_id_list.add(this.conn.gets(1));
             }
-        }
-        else{
-            logger.error(String.format("Unable to get jobs by state and site. \nArgs - siteId: %d\t, runId: %d\t, state: %s",siteId,runId,state));
+        } else {
+            logger.error(String.format("Unable to get jobs by state and site. \nArgs - siteId: %d\t, runId: %d\t, state: %s", siteId, runId, state));
         }
         return job_id_list;
     }
@@ -293,9 +283,8 @@ public class DatabaseConnection {
             String logMsg = "Job %d marked as %s";
             logger.debug(String.format(logMsg, jobId, state));
 
-        }
-        else{
-            logger.error(String.format("Unable to update job state. \nArgs - jobId: %d\t siteId: %d\t runId: %d\t state: %s",jobId,siteId,runId,state));
+        } else {
+            logger.error(String.format("Unable to update job state. \nArgs - jobId: %d\t siteId: %d\t runId: %d\t state: %s", jobId, siteId, runId, state));
         }
         updateProcessingState(siteId, runId);
     }
@@ -320,9 +309,8 @@ public class DatabaseConnection {
                 String logMsg = "New parameter added. Job ID: %d\t Node ID: %d\t Site ID: %d\t Name: %s\t Value: %s";
                 logger.info(String.format(logMsg, jobId, nodeId, siteId, paramName, paramValue));
 
-            }
-            else{
-                logger.error(String.format("Unable to add job parameters to the database. \nArgs - entryName: %s\t, paramName: %d\t siteId: %d\t nodeId: %d",entryName,paramName,siteId,nodeId));
+            } else {
+                logger.error(String.format("Unable to add job parameters to the database. \nArgs - entryName: %s\t, paramName: %d\t siteId: %d\t nodeId: %d", entryName, paramName, siteId, nodeId));
             }
         }
     }
