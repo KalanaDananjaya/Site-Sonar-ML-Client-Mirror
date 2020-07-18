@@ -14,9 +14,9 @@ public class DatabaseConnection {
     DB conn;
     int runId;
     // Mark run as expired after this time period(hours)
-    int run_expiration_time = 12;
+    int runExpirationTime = 24;
     // Mark site as STALLED if no update has happened for this time period(hours)
-    int site_expiration_time = 3;
+    int siteExpirationTime = 12;
 
     private final static Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
     private static FileAppender handler;
@@ -141,7 +141,7 @@ public class DatabaseConnection {
 
     public void markStalledJobs(int runId) {
         String sql = "SELECT site_id FROM processing_state WHERE run_id=%d AND (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d)";
-        String preparedStmt = String.format(sql, runId, this.site_expiration_time);
+        String preparedStmt = String.format(sql, runId, this.siteExpirationTime);
         ArrayList<String> stalled_site_ids = new ArrayList<>();
         logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
@@ -187,12 +187,12 @@ public class DatabaseConnection {
         } else {
             //If sites are waiting but run has been running for more than 24 hours, mark run as complete
             String sql = "UPDATE run SET state='%s' WHERE (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d) AND run_id=%d";
-            String preparedStmt = String.format(sql, "TIMED_OUT", this.run_expiration_time, runId);
+            String preparedStmt = String.format(sql, "TIMED_OUT", this.runExpirationTime, runId);
             logger.trace(preparedStmt);
             if (this.conn.query(preparedStmt)) {
                 if (this.conn.getUpdateCount() > 0) {
                     String logMsg = "Run %d marked as TIMED_OUT due to exceeding %d. Exiting...";
-                    logger.info(String.format(logMsg, runId, this.run_expiration_time));
+                    logger.info(String.format(logMsg, runId, this.runExpirationTime));
 
                     // Exit the program
                     System.exit(0);
