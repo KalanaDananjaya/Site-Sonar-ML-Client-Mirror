@@ -79,17 +79,17 @@ public class DatabaseConnection {
     }
 
 
-    public Integer addNode(Integer siteId, String nodeName) {
-        String sql = "INSERT INTO nodes (site_id,run_id,node_name) VALUES (%d, %d, '%s')";
-        String preparedStmt = String.format(sql, siteId, this.runId, nodeName);
+        public Integer addNode(Integer siteId, String nodeName, Integer jobId) {
+        String sql = "INSERT INTO nodes (site_id,run_id,job_id,node_name) VALUES (%d, %d,%d,'%s')";
+        String preparedStmt = String.format(sql, siteId, this.runId, jobId, nodeName);
         Integer nodeId = -1;
         logger.trace(preparedStmt);
         if (this.conn.query(preparedStmt)) {
             if (this.conn.query("SELECT LAST_INSERT_ID()")) {
                 if (conn.moveNext()) {
                     nodeId = Integer.parseInt(conn.gets(1));
-                    String logMsg = "New node entry with id %d created successfully for %s in site %d";
-                    logger.info(String.format(logMsg, nodeId, nodeName, siteId));
+                    String logMsg = "New node entry with id %d created successfully for %s in site %d with job Id %d";
+                    logger.info(String.format(logMsg, nodeId, nodeName, siteId, jobId));
                 } else {
                     String logMsg = "Failed to retrieve the Id of last created node for %s";
                     logger.warn(String.format(logMsg, nodeName));
@@ -97,7 +97,7 @@ public class DatabaseConnection {
 
             }
         } else {
-            logger.error(String.format("Failed to create new node. \nArgs - siteId: %d\t nodeName: %s", siteId, nodeName));
+            logger.error(String.format("Failed to create new node. \nArgs - siteId: %d\t nodeName: %s\t jobId: %d", siteId, nodeName, jobId));
         }
         return nodeId;
     }
@@ -296,7 +296,7 @@ public class DatabaseConnection {
         Integer nodeId = getNodeIdByNodeName(siteId, nodeName);
         if (nodeId == -1) {
             // If node does not exist, create Node
-            nodeId = addNode(siteId, nodeName);
+            nodeId = addNode(siteId, nodeName, jobId);
         }
 
         if ((paramName.equals("state")) && (paramValue.equals("complete"))) {
