@@ -191,7 +191,7 @@ public class DatabaseConnection {
             logger.trace(preparedStmt);
             if (this.conn.query(preparedStmt)) {
                 if (this.conn.getUpdateCount() > 0) {
-                    String logMsg = "Run %d marked as TIMED_OUT due to exceeding %d. Exiting...";
+                    String logMsg = "Run %d marked as TIMED_OUT due to exceeding %d hours. Exiting...";
                     logger.info(String.format(logMsg, runId, this.runExpirationTime));
 
                     // Exit the program
