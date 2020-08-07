@@ -14,9 +14,9 @@ public class DatabaseConnection {
     DB conn;
     int runId;
     // Mark run as expired after this time period(hours)
-    int runExpirationTime = 24;
+    int runExpirationTime = 36;
     // Mark site as STALLED if no update has happened for this time period(hours)
-    int siteExpirationTime = 12;
+    int siteExpirationTime = 24;
 
     private final static Logger logger = Logger.getLogger(DatabaseConnection.class.getName());
     private static FileAppender handler;
