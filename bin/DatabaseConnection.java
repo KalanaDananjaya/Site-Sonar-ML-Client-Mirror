@@ -230,7 +230,7 @@ public class DatabaseConnection {
         Integer finished_job_count = len_completed_jobs + len_killed_jobs;
         int all_job_count = finished_job_count + len_started_jobs;
         String preparedStmt = "";
-        if (((float) finished_job_count / (float) all_job_count) > 0.9) {
+        if (((float) finished_job_count / (float) all_job_count) > 0.7) {
             String sql = "UPDATE processing_state SET state='%s',running_job_count=%d,completed_job_count=%d,killed_job_count=%d,last_update=NOW() WHERE (site_id=%d) AND (run_id=%d)";
             preparedStmt = String.format(sql, "COMPLETED", len_started_jobs, len_completed_jobs, len_killed_jobs, siteId, runId);
             logger.trace(preparedStmt);
