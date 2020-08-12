@@ -140,7 +140,7 @@ public class DatabaseConnection {
     }
 
     public void markStalledJobs(int runId) {
-        String sql = "SELECT site_id FROM processing_state WHERE run_id=%d AND (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d)";
+        String sql = "SELECT site_id FROM processing_state WHERE run_id=%d  AND state='WAITING' AND (TIMESTAMPDIFF(HOUR,last_update,NOW())>%d)";
         String preparedStmt = String.format(sql, runId, this.siteExpirationTime);
         ArrayList<String> stalled_site_ids = new ArrayList<>();
         logger.trace(preparedStmt);
