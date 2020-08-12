@@ -1,4 +1,4 @@
-spool/*
+spool/*.done
 out/*
 conf/env.JAVA_HOME
 *.iml

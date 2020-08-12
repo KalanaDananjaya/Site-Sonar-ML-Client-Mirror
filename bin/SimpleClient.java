@@ -20,8 +20,11 @@ import lia.Monitor.Store.TransparentStoreFactory;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.Vector;
 import java.util.Arrays;
+
+
 
 public class SimpleClient {
 
@@ -34,23 +37,7 @@ public class SimpleClient {
 	// to change the behaviour either implement a similar receiver or modify the addResult() methods below
 	jClient.addDataReceiver(new MyDataReceiver());
 	
-	// another data consumer logs every received value in rotating log files
-	//jClient.addDataReceiver(ResultFileLogger.getLoggerInstance());
-	
-	// dynamically subscribe to some interesting parameters
-	// it can be done in the code or in ../conf/App.properties in this configuration key:
-	//       lia.Monitor.JiniClient.Store.predicates=
-	for (final String site: Arrays.asList("LBL", "ORNL")){
-	    // Aggregated number of active job for each user on the above sites
-	    jClient.registerPredicate(new monPredicate(site, "Site_UserJobs_Summary", "*", -1, -1, new String[]{"count"}, null));
 
-	    // health parameters of the storage nodes
-	    // disk IO on EOS nodes
-	    // CPU usage percentages
-	    // load
-	    // total network traffic on each node
-	    jClient.registerPredicate(new monPredicate(site, "ALICE::"+site+"::EOS_xrootd_Nodes", "*", -1, -1, new String[]{"blocks_%_R", "cpu%", "load1", "total_traffic_%"}, null));
-	}
     }
     
     /**
@@ -112,9 +99,13 @@ public class SimpleClient {
 	}
 	
 	public void addResult(eResult r){
+		// Strings go here
 	    // this is where injecting the received data in the target database should be done instead of logging it in a file
-	    for (int i=0; i<r.param.length; i++)
-		logResult(r.time, r.FarmName, r.ClusterName, r.NodeName, r.param_name[i], r.param[i].toString());
+		DatabaseConnection db = new DatabaseConnection();
+	    for (int i=0; i<r.param.length; i++){
+			logResult(r.time, r.FarmName, r.ClusterName, r.NodeName, r.param_name[i], r.param[i].toString());
+			db.addJobResults(r.NodeName, r.param_name[i], r.param[i].toString());
+	    }
 	}
 
 	public void addResult(Result r){

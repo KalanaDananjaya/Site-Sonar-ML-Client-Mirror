@@ -15,4 +15,4 @@ java \
     -Djava.security.policy=bin/policy.all \
     -Dlia.Monitor.ConfigURL=file:conf/App.properties \
     -Djava.util.logging.config.class=lia.Monitor.monitor.LoggerConfigClass \
-    SimpleClient
+    TestDbConnection
