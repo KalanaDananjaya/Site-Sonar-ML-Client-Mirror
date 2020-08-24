@@ -10,5 +10,5 @@ Please make sure following prerequisites are met before starting the program.
 
 ## Starting the client
 * To start the client run `run.sh`
-* A single run will last about 24 hours. Therefore it is advised to run the client as a background program using `nohup run.sh &`
-> Once the tool is started it will keep listening changes in the topic `SiteSonar` in ALICE Grid Sites.
+* A single run will last about 48 hours. Therefore it is advised to run the client as a background program using `nohup run.sh &`
+> Once the tool is started it will keep listening to data published to the topic `SiteSonar` in MonAlisa.
